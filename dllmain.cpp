@@ -11,6 +11,10 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     {
     case DLL_PROCESS_ATTACH:
     {
+        // This is required to wait for Twinkie to start
+        // Only use this when you are targeting your DLL for ModLoader release
+        Sleep(100);
+
         ImGui::SetCurrentContext(GetImGuiContext());
         MyModule* NewModule = new MyModule(*GetTrackmaniaMgr(), *GetLogger(), GetUiRenderEnabled());
         AddModule(NewModule);
@@ -24,3 +28,8 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     return TRUE;
 }
 
+// Only use this when you are targeting your DLL for ModLoader release
+extern "C" __declspec(dllexport) void ThisFunctionDoesNothing()
+{
+    return;
+}
