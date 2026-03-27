@@ -2,6 +2,21 @@
 #include "pch.h"
 #include "MyModule/MyModule.h"
 
+static DWORD WINAPI MainThread(LPVOID lpReserved)
+{
+    // Wait for Twinkie to initialize
+    while (!GetImGuiContext())
+    {
+        Sleep(1);
+    }
+
+    ImGui::SetCurrentContext(GetImGuiContext());
+    MyModule* NewModule = new MyModule(*GetTrackmaniaMgr(), *GetLogger(), GetUiRenderEnabled());
+    AddModule(NewModule);
+
+    return TRUE;
+}
+
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
                        LPVOID lpReserved
@@ -11,13 +26,8 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     {
     case DLL_PROCESS_ATTACH:
     {
-        // This is required to wait for Twinkie to start
-        // Only use this when you are targeting your DLL for ModLoader release
-        Sleep(100);
-
-        ImGui::SetCurrentContext(GetImGuiContext());
-        MyModule* NewModule = new MyModule(*GetTrackmaniaMgr(), *GetLogger(), GetUiRenderEnabled());
-        AddModule(NewModule);
+        DisableThreadLibraryCalls(hModule);
+        CreateThread(nullptr, 0, MainThread, hModule, 0, nullptr);
         break;
     }
     case DLL_THREAD_ATTACH:
