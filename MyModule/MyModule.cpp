@@ -7,7 +7,7 @@ void MyModule::RenderAnyways()
 
 	ImGui::Text("This example is from ");
 	ImGui::SameLine();
-	ImGui::TextLinkOpenURL("https://github.com/TwinkieTweaks/ExampleCustomModule");
+	ImGui::TextLinkOpenURL("https://github.com/TwinkieTweaks/ForeverExampleCustomModule");
 
 	if (ImGui::Button("Cool"))
 	{
@@ -39,5 +39,5 @@ void MyModule::RenderSettings()
 
 	ImGui::Text("This example is from ");
 	ImGui::SameLine();
-	ImGui::TextLinkOpenURL("https://github.com/TwinkieTweaks/ExampleCustomModule");
+	ImGui::TextLinkOpenURL("https://github.com/TwinkieTweaks/ForeverExampleCustomModule");
 }
